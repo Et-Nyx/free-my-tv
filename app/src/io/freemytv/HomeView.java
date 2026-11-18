@@ -1257,6 +1257,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
 
     /** Swaps the background with a cross-fade (from one image to another, from the gradient to an image, or back). */
     private void showBackdrop(Backdrop b) {
+        // This fork: a solid palette (Settings > Palette) keeps the home screen's own background; the photos stay in
+        // the screensaver. The fade then runs to "no photo", the palette color.
+        if (Look.solid()) b = null;
         if (b == bgTo) return;
         long up = SystemClock.uptimeMillis();
         // In the middle of another swap, start from whichever is more visible.
