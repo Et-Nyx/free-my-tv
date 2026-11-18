@@ -1,6 +1,7 @@
 package io.freemytv;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -169,6 +170,41 @@ final class Photos {
 
     // MARK: - Importing what the computer sent
 
+    /**
+     * This fork: the CC0 photos bundled in assets/backgrounds (see CREDITS.md there), copied into the private inbox
+     * once, on the first import after install — after that they are ordinary My Photos, to keep or remove on the TV;
+     * removing them doesn't bring them back. Assets aren't readable after install by name, so a failed copy is tried
+     * again at the next open.
+     */
+    private static void copyBuiltin(Context app) {
+        if (sp(app).getBoolean("builtinPhotos", false)) return;
+        try {
+            File in = privateInbox(app);
+            if (!in.isDirectory() && !in.mkdirs()) return;
+            boolean all = true;
+            for (String name : app.getAssets().list("backgrounds")) {
+                if (!name.endsWith(".jpg")) continue;   // CREDITS.md travels with them
+                if (new File(in, name).exists()) continue;
+                File part = new File(in, "." + name), done = new File(in, name);
+                try (java.io.InputStream is = app.getAssets().open("backgrounds/" + name);
+                     java.io.FileOutputStream os = new java.io.FileOutputStream(part)) {
+                    byte[] buf = new byte[64 * 1024];
+                    for (int n; (n = is.read(buf)) > 0; ) os.write(buf, 0, n);
+                    os.getFD().sync();
+                }
+                if (!part.renameTo(done)) part.delete();
+                all = false;
+            }
+            if (all) sp(app).edit().putBoolean("builtinPhotos", true).apply();
+        } catch (IOException e) {
+            AppLog.w("photos: built-in backgrounds not copied: " + e.getMessage());
+        }
+    }
+
+    private static SharedPreferences sp(Context c) {
+        return c.getSharedPreferences("settings", Context.MODE_PRIVATE);
+    }
+
     private static boolean importing;
     private static final List<Runnable> waiting = new ArrayList<>();
 
@@ -179,6 +215,7 @@ final class Photos {
      */
     static void importInbox(Context c, Runnable done) {
         Context app = c.getApplicationContext();
+        copyBuiltin(app);
         synchronized (Photos.class) {
             if (done != null) waiting.add(done);
             if (importing) return;
