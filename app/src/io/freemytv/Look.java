@@ -36,7 +36,9 @@ final class Look {
     }
 
     private static int[] p() {
-        return PALETTES[palette() - 1];
+        // Palette 0 (the stock aurora) never asks for these, but the callers pass them whatever the palette:
+        // its colors come out as Grafite's, and Scene ignores them while solid() is false.
+        return PALETTES[Math.max(0, palette() - 1)];
     }
 
     static int background() {
