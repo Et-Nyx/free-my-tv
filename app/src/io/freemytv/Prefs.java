@@ -27,11 +27,13 @@ final class Prefs {
     /** Remote keys we handle, with the app each opens until the user picks another. Codes read from the TCL's log. */
     static final int KEY_NETFLIX = 4062, KEY_YOUTUBE = 190, KEY_PRIME = 4099, KEY_TCL_CHANNEL = 4020;
     /**
-     * The Whale TV projector remote's four app buttons (Bettdow AC1066, HOTACK; see RemoteKeys.WHALE): F1, the vendor's
-     * QY_FUNC_1 (312, from its framework.jar KeyEvent), F4 and F2, as its RS1U-GL-H keylayout maps the IR scancodes.
+     * The Whale TV projector remote's four app buttons (Bettdow AC1066, HOTACK; see RemoteKeys.WHALE), as they really
+     * arrive (read from the buttons' behavior on the TV itself): Netflix F2, YouTube F1, Disney+ the vendor's
+     * QY_FUNC_1 (312, from its framework.jar KeyEvent) and Prime Video F4 — the RS1U-GL-H keylayout maps the IR
+     * scancodes 0x0c00dd, 0x0c00e3, 0x0c00e1 and 0x0c00db to them.
      */
-    static final int KEY_WHALE_NETFLIX = KeyEvent.KEYCODE_F1, KEY_WHALE_YOUTUBE = 312, KEY_WHALE_DISNEY = KeyEvent.KEYCODE_F4,
-            KEY_WHALE_PRIME = KeyEvent.KEYCODE_F2;
+    static final int KEY_WHALE_NETFLIX = KeyEvent.KEYCODE_F2, KEY_WHALE_YOUTUBE = KeyEvent.KEYCODE_F1,
+            KEY_WHALE_DISNEY = 312, KEY_WHALE_PRIME = KeyEvent.KEYCODE_F4;
     /** TCL's Settings button: NOTIFICATION, which only Google TV's home app (off in our mode) answers. */
     static final int KEY_TCL_SETTINGS = KeyEvent.KEYCODE_NOTIFICATION;
     /** A TCL Settings button's value that opens our quick settings panel over what's playing. */
