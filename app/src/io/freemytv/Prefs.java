@@ -26,6 +26,12 @@ final class Prefs {
 
     /** Remote keys we handle, with the app each opens until the user picks another. Codes read from the TCL's log. */
     static final int KEY_NETFLIX = 4062, KEY_YOUTUBE = 190, KEY_PRIME = 4099, KEY_TCL_CHANNEL = 4020;
+    /**
+     * The Whale TV projector remote's four app buttons (Bettdow AC1066, HOTACK; see RemoteKeys.WHALE): F1, the vendor's
+     * QY_FUNC_1 (312, from its framework.jar KeyEvent), F4 and F2, as its RS1U-GL-H keylayout maps the IR scancodes.
+     */
+    static final int KEY_WHALE_NETFLIX = KeyEvent.KEYCODE_F1, KEY_WHALE_YOUTUBE = 312, KEY_WHALE_DISNEY = KeyEvent.KEYCODE_F4,
+            KEY_WHALE_PRIME = KeyEvent.KEYCODE_F2;
     /** TCL's Settings button: NOTIFICATION, which only Google TV's home app (off in our mode) answers. */
     static final int KEY_TCL_SETTINGS = KeyEvent.KEYCODE_NOTIFICATION;
     /** A TCL Settings button's value that opens our quick settings panel over what's playing. */
@@ -129,6 +135,7 @@ final class Prefs {
                     KEY_XIAOMI_YOUTUBE}
             : RemoteKeys.XIAOMI ? new int[] {KEY_MI, KEY_YOUTUBE, KEY_XIAOMI_PATCHWALL, KEY_XIAOMI_OKKO, KEY_XIAOMI_VK,
                     KEY_XIAOMI_RUTUBE, KEY_XIAOMI_KION, KEY_XIAOMI_WINK, KEY_XIAOMI_IVI}
+            : RemoteKeys.WHALE ? new int[] {KEY_WHALE_NETFLIX, KEY_WHALE_YOUTUBE, KEY_WHALE_DISNEY, KEY_WHALE_PRIME}
             : new int[] {KEY_NETFLIX, KEY_YOUTUBE, KEY_PRIME, KEY_TCL_CHANNEL, KEY_TCL_SETTINGS};
 
     /** Bumped by every change: screens compare it to know when to redraw. */
@@ -578,6 +585,16 @@ final class Prefs {
                 case KEY_HISENSE_DISNEY: return "com.disney.disneyplus";
                 case KEY_HISENSE_APPS: return ALL_APPS;
                 case KEY_HISENSE_SETTINGS: return "com.android.tv.settings";
+                default: return "";
+            }
+        }
+        if (RemoteKeys.WHALE) {
+            // The buttons' own apps aren't on this projector: open what its owner uses instead, until picked otherwise.
+            switch (keyCode) {
+                case KEY_WHALE_NETFLIX: return "com.stremio.one";
+                case KEY_WHALE_YOUTUBE: return "org.smarttube.stable";
+                case KEY_WHALE_DISNEY: return "com.cbs.ott";
+                case KEY_WHALE_PRIME: return "com.amazon.amazonvideo.livingroom";
                 default: return "";
             }
         }

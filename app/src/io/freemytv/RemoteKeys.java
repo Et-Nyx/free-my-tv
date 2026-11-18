@@ -47,6 +47,12 @@ final class RemoteKeys {
      */
     static final boolean TCL = is("TCL"), VESTEL = is("Vestel"), KTC = is("KTC"), SONY = is("Sony"), FORMOVIE = is("Formovie"),
             HISENSE = is("Hisense");
+    /**
+     * Bettdow AC1066 and other Whale TV OS projectors (manufacturer HOTACK, Android 13). The RS1U-D remote's four app
+     * buttons are F1 (Netflix), QY_FUNC_1 312 (YouTube), F4 (Disney+) and F2 (Prime Video), mapped by the vendor's
+     * RS1U-GL-H keylayout (scancodes 0x0c00e3, 0x0c00e1, 0x0c00db, 0x0c00dd) and its KeyEvent (KEYCODE_QY_FUNC_1=312).
+     */
+    static final boolean WHALE = is("HOTACK");
     static final boolean CHROMECAST_SABRINA = SabrinaRemote.supported(Build.DEVICE, Build.MODEL);
     static final boolean GOOGLE_STREAMER = is("Google") && Build.MODEL.equals("Google TV Streamer");
     /**
@@ -99,7 +105,7 @@ final class RemoteKeys {
 
     static boolean supported() {
         return TCL || STEM_NETFLIX || KTC || SONY || XIAOMI || XIAOMI_AFKR0 || HISENSE || CHROMECAST_SABRINA
-                || GOOGLE_STREAMER || ONN || JVC_SKYWORTH || PHILIPS_GTV;
+                || GOOGLE_STREAMER || ONN || JVC_SKYWORTH || PHILIPS_GTV || WHALE;
     }
 
     /**
