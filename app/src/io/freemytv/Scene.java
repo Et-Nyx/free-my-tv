@@ -347,9 +347,9 @@ final class Scene {
             }
             if (body > 0) {
                 flatFill.setColor(Ui.alpha(tint | 0xFF000000, Math.max(0.35f, tintAlpha)));
-                c.drawRoundRect(r, radius, radius, flatFill);
+                c.drawRect(r, flatFill);
             }
-            c.drawRoundRect(r, radius, radius, flatRim);
+            c.drawRect(r, flatRim);
             return;
         }
         float hw = r.width() / 2, hh = r.height() / 2, inner = Math.min(hw, hh);
@@ -384,17 +384,17 @@ final class Scene {
             // little toward white instead of a second full-area fill.
             int tinted = lift > 0.001f ? blend(tint | 0xFF000000, 0xFFFFFFFF, Math.min(0.25f, lift * 2)) : tint | 0xFF000000;
             flatFill.setColor(Ui.alpha(tinted, tintAlpha * alpha * body));
-            c.drawRoundRect(r, radius, radius, flatFill);
+            c.drawRect(r, flatFill);
         }
         flatRim.setAlpha(Math.round(0x33 * alpha));
-        c.drawRoundRect(r, radius, radius, flatRim);
+        c.drawRect(r, flatRim);
         flatRim.setAlpha(0x33);
         if (specular > 0.001f) {
             sheenPaint.setAlpha(Math.round(255 * Math.min(1, specular) * alpha));
             c.save();
             c.translate(0, r.top);
             sheenRect.set(r.left, 0, r.right, r.height());
-            c.drawRoundRect(sheenRect, radius, radius, sheenPaint);
+            c.drawRect(sheenRect, sheenPaint);
             c.restore();
         }
     }
@@ -413,7 +413,7 @@ final class Scene {
         shader.setLocalMatrix(softMatrix);
         softPaint.setShader(shader);
         softPaint.setAlpha(Math.round(255 * Math.max(0, Math.min(1, alpha))));
-        c.drawRoundRect(r, radius, radius, softPaint);
+        c.drawRect(r, softPaint);
         softPaint.setShader(null);
     }
 }

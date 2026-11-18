@@ -394,7 +394,7 @@ public class QuickPanelActivity extends Activity {
             c.saveLayer(card, layer);
             fill.setAlpha(255);   // a shader is still scaled by the paint's alpha, which the last tile left low
             fill.setShader(tint);
-            c.drawRoundRect(card, r, r, fill);
+            c.drawRect(card, fill);
             fill.setShader(null);
             float w = card.width(), h = card.height();
             for (int i = 0; i < glows.length; i++) {
@@ -407,13 +407,13 @@ public class QuickPanelActivity extends Activity {
             atop.setShader(null);
             c.restore();
             fill.setShader(sheen);
-            c.drawRoundRect(card, r, r, fill);
+            c.drawRect(card, fill);
             fill.setShader(null);
             rim.setStrokeWidth(1.6f * k);
             rim.setShader(cardRim);
             rect.set(card);
             rect.inset(0.8f * k, 0.8f * k);
-            c.drawRoundRect(rect, r, r, rim);
+            c.drawRect(rect, rim);
             rim.setShader(null);
         }
 
@@ -430,7 +430,7 @@ public class QuickPanelActivity extends Activity {
             for (int i = 0; i < tiles.length; i++) {
                 rect.set(tileX[i], tileY[i], tileX[i] + tileW, tileY[i] + TILE_H * k);
                 fill.setColor(tileFill);
-                c.drawRoundRect(rect, r, r, fill);
+                c.drawRect(rect, fill);
                 drawRim(c, rect, r);
             }
             if (!inputsOpen) drawLens(c, r);
@@ -467,7 +467,7 @@ public class QuickPanelActivity extends Activity {
                 float y = rowTop(i);
                 rect.set(PAD * k, y, PAD * k + w, y + ROW_H * k);
                 fill.setColor(tileFill);
-                c.drawRoundRect(rect, r, r, fill);
+                c.drawRect(rect, fill);
                 drawRim(c, rect, r);
             }
             if (inputsOpen) drawLens(c, r);
@@ -496,7 +496,7 @@ public class QuickPanelActivity extends Activity {
             rim.setStrokeWidth(1.2f * k);
             rim.setShader(tileRim);
             rect.set(0.6f * k, 0.6f * k, r.width() - 0.6f * k, r.height() - 0.6f * k);
-            c.drawRoundRect(rect, radius, radius, rim);
+            c.drawRect(rect, rim);
             rim.setShader(null);
             c.restore();
         }
@@ -516,7 +516,7 @@ public class QuickPanelActivity extends Activity {
                 float g = i * 7 * k;
                 rect.set(cx - w / 2 - g, cy - h / 2 - g, cx + w / 2 + g, cy + h / 2 + g);
                 fill.setColor(Ui.alpha(accent, 0.10f));
-                c.drawRoundRect(rect, radius + g, radius + g, fill);
+                c.drawRect(rect, fill);
             }
             rect.set(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2);
             c.save();
@@ -524,11 +524,11 @@ public class QuickPanelActivity extends Activity {
             fill.setAlpha(255);
             fill.setShader(lens);
             rect.offset(0, -rect.top);
-            c.drawRoundRect(rect, radius, radius, fill);
+            c.drawRect(rect, fill);
             fill.setShader(null);
             rim.setStrokeWidth(1.4f * k);
             rim.setColor(night ? 0xFFFFFFFF : 0x33000000);
-            c.drawRoundRect(rect, radius, radius, rim);
+            c.drawRect(rect, rim);
             c.restore();
         }
 

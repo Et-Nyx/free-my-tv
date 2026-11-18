@@ -49,7 +49,7 @@ public class NowPlaying extends NotificationListenerService {
             float level = moving ? 0.3f + 0.7f * Math.abs((float) Math.sin(t / PERIOD_MS[i] + i * 1.3f)) : STILL[i];
             float bx = x + i * cap * 0.42f;
             r.set(bx, base - cap * level, bx + cap * 0.28f, base);
-            c.drawRoundRect(r, cap * 0.14f, cap * 0.14f, p);
+            c.drawRect(r, p);
         }
     }
 

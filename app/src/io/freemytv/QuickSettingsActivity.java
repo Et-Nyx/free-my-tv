@@ -179,14 +179,14 @@ public final class QuickSettingsActivity extends Activity {
             paint.setColor(color);
             switch (kind) {
                 case 0:
-                    canvas.drawRoundRect(2, 4, 22, 20, 2, 2, paint);
+                    canvas.drawRect(2, 4, 22, 20, paint);
                     canvas.drawCircle(7, 8, 1, paint); canvas.drawPath(path, paint); break;
                 case 1:
                     canvas.drawPath(path, paint);
                     canvas.drawArc(9, 4, 22, 20, -55, 110, false, paint);
                     canvas.drawArc(11, 8, 18, 16, -55, 110, false, paint); break;
                 case 2:
-                    canvas.drawRoundRect(3, 5, 21, 17, 3, 3, paint);
+                    canvas.drawRect(3, 5, 21, 17, paint);
                     canvas.drawLine(8, 17, 8, 21, paint); canvas.drawLine(16, 17, 16, 21, paint);
                     for (int x = 7; x <= 17; x += 5) canvas.drawLine(x, 9, x, 13, paint); break;
                 case 3:

@@ -72,7 +72,7 @@ final class Shadows {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setColor(0xFF000000);
         p.setMaskFilter(new BlurMaskFilter(b, BlurMaskFilter.Blur.NORMAL));
-        new Canvas(full).drawRoundRect(m, m, w - m, h - m, radius, radius, p);
+        new Canvas(full).drawRect(m, m, w - m, h - m, p);
         if (dither) {
             int[] px = new int[w * h];
             full.getPixels(px, 0, w, 0, 0, w, h);

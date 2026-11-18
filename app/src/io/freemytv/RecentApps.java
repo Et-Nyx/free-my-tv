@@ -348,7 +348,7 @@ final class RecentApps {
         }
         fill.setColor(Ui.alpha(0xFF000000, 0.35f * alpha));
         r.offset(0, 10 * k);
-        c.drawRoundRect(r, rad, rad, fill);
+        c.drawRect(r, fill);
         r.offset(0, -10 * k);
         if (card.paint != null) {
             float sx = r.width() / card.item.tile.getWidth(), sy = r.height() / card.item.tile.getHeight();
@@ -356,14 +356,14 @@ final class RecentApps {
             matrix.postTranslate(r.left, r.top);
             card.paint.getShader().setLocalMatrix(matrix);
             card.paint.setAlpha(Math.round(255 * alpha));
-            c.drawRoundRect(r, rad, rad, card.paint);
+            c.drawRect(r, card.paint);
         } else {
             fill.setColor(Ui.alpha(0xFF2C2C2E, alpha));
-            c.drawRoundRect(r, rad, rad, fill);
+            c.drawRect(r, fill);
         }
         if (ad < 0.5f) {
             rim.setColor(Ui.alpha(0xFFFFFFFF, 0.5f * alpha * (1 - ad * 2)));
-            c.drawRoundRect(r, rad, rad, rim);
+            c.drawRect(r, rim);
         }
         label(c, card.item.label, r.left + 12 * k, r.top - 16 * k, Ui.alpha(0xFFFFFFFF, 0.9f * alpha), 22 * k, Paint.Align.LEFT);
     }

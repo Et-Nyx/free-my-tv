@@ -691,10 +691,10 @@ public class SettingsActivity extends Activity {
                 float r = 18 * k * s;
                 tmp.offset(0, 10 * k * f);
                 shadow.setColor(Ui.alpha(0xFF000000, 0.4f * f));
-                c.drawRoundRect(tmp, r, r, shadow);
+                c.drawRect(tmp, shadow);
                 tmp.offset(0, -10 * k * f);
                 white.setAlpha(Math.round(255 * f));
-                c.drawRoundRect(tmp, r, r, white);
+                c.drawRect(tmp, white);
                 rowRect.set(tmp);
             }
             return f;
@@ -1872,7 +1872,7 @@ public class SettingsActivity extends Activity {
                 c.drawBitmap(qr, null, tmp, qrPaint);
             } else {   // used up or expired: where the code goes, until New code
                 tmp.set(x, top, x + QR_SIDE * k, top + QR_SIDE * k);
-                c.drawRoundRect(tmp, 12 * k, 12 * k, qrSlot);
+                c.drawRect(tmp, qrSlot);
             }
             float below = top + QR_SIDE * k;
             if (keySteps != null) {

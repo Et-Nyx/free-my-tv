@@ -1935,11 +1935,11 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             tmp.set(-bw / 2, -bh / 2, bw / 2, bh / 2);
             tileFill.setShader(tileShaders[i]);
             tileFill.setAlpha(255);
-            c.drawRoundRect(tmp, r0, r0, tileFill);
+            c.drawRect(tmp, tileFill);
             if (fc > 0.01f) {
                 tileFill.setShader(tileGlow);
                 tileFill.setAlpha(Math.round(255 * fc));
-                c.drawRoundRect(tmp, r0, r0, tileFill);
+                c.drawRect(tmp, tileFill);
                 tileFill.setAlpha(255);
             }
             tileFill.setShader(null);
@@ -1948,7 +1948,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         } else if (it.logo != null) {
             tileFill.setShader(null);
             tileFill.setColor(0xFF161618);
-            c.drawRoundRect(cell, r, r, tileFill);
+            c.drawRect(cell, tileFill);
             drawLogo(c, it, cell, s, 0);
         } else {
             if (it.tile != null) roundImage(c, it.tile, it.tileShader, cell, r);
@@ -1968,7 +1968,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.translate(cell.left, cell.top);
         c.scale(sx, sy);
         imageFill.setShader(shader);
-        c.drawRoundRect(0, 0, image.getWidth(), image.getHeight(), r / sx, r / sy, imageFill);
+        c.drawRect(0, 0, image.getWidth(), image.getHeight(), imageFill);
         imageFill.setShader(null);
         c.restore();
     }
@@ -1984,7 +1984,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.translate(-sl, 0);
         imageFill.setShader(shader);
         imageFill.setAlpha(Math.round(255 * alpha));
-        c.drawRoundRect(sl, 0, sl + sw, ih, r / sx, r / sy, imageFill);
+        c.drawRect(sl, 0, sl + sw, ih, imageFill);
         imageFill.setAlpha(255);
         imageFill.setShader(null);
         c.restore();
@@ -2219,7 +2219,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         if (f > 0.01f) {
             fill.setShader(null);
             fill.setColor(Ui.alpha(WHITE, f));
-            c.drawRoundRect(cell, r, r, fill);
+            c.drawRect(cell, fill);
         }
         boolean off = it.kind == HomeApps.INPUT && !it.connected
                 || it.kind == HomeApps.HOME_ASSISTANT && it.control != null && !it.control.on();
@@ -2265,7 +2265,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         float split = r.left + 392 * k;
         fill.setShader(null);
         fill.setColor(tone(0x1A000000, 0x24FFFFFF));
-        c.drawRoundRect(split - k, r.top + 34 * k, split + k, r.bottom - 34 * k, k, k, fill);
+        c.drawRect(split - k, r.top + 34 * k, split + k, r.bottom - 34 * k, fill);
         float hx = split + 30 * k;
         if (textDays) {
             float hw = (r.right - 30 * k - hx) / 5;
@@ -2408,7 +2408,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             tmp.set(right - 108 * k, mid - 17 * k, right, mid + 17 * k);
             fill.setShader(null);
             fill.setColor(Ui.alpha(color, 0.2f));
-            c.drawRoundRect(tmp, 17 * k, 17 * k, fill);
+            c.drawRect(tmp, fill);
             changePaint.setColor(color);
             c.drawText(changeText[i], tmp.centerX(), mid + Ui.halfCap(changePaint), changePaint);
         }
@@ -2610,21 +2610,21 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             tmp.set(-base.width() / 2, -bh / 2, base.width() / 2, bh / 2);
             sheen.setShader(cardSheen);
             sheen.setAlpha(Math.round(255 * fc));
-            c.drawRoundRect(tmp, radius, radius, sheen);
+            c.drawRect(tmp, sheen);
             sheen.setAlpha(255);
             c.restore();
         }
         if (fc < 0.99f) {
             veil.setColor(Ui.alpha(0xFF000000, 0.08f * (1 - fc)));
-            c.drawRoundRect(cell, r, r, veil);
+            c.drawRect(cell, veil);
         }
         border.setColor(0x14FFFFFF);
-        c.drawRoundRect(cell, r, r, border);
+        c.drawRect(cell, border);
         if (f > 0.01f) {
             rim.setShader(null);
             rim.setColor(Ui.alpha(0xFFFFFFFF, 0.4f * fc));
             rim.setStrokeWidth(1.5f * k);
-            c.drawRoundRect(cell, r, r, rim);
+            c.drawRect(cell, rim);
             rim.setStrokeWidth(2.5f * k);
         }
     }
@@ -4275,7 +4275,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         } else {
             fill.setShader(null);
             fill.setColor(tone(0xFFDADADF, 0xFF2C2C2E));
-            c.drawRoundRect(cell, r, r, fill);
+            c.drawRect(cell, fill);
         }
         float progress = it.progress();
         if (progress >= 0) {
@@ -4283,10 +4283,10 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             fill.setShader(null);
             fill.setColor(0x73000000);
             tmp.set(cell.left + inset, bottom - bar, cell.right - inset, bottom);
-            c.drawRoundRect(tmp, bar / 2, bar / 2, fill);
+            c.drawRect(tmp, fill);
             fill.setColor(0xF2FFFFFF);
             tmp.right = tmp.left + Math.max(bar, tmp.width() * progress);
-            c.drawRoundRect(tmp, bar / 2, bar / 2, fill);
+            c.drawRect(tmp, fill);
         }
         if (f > 0.01f) {
             // Drawn at the card's resting size, scaled with it: the gradients are made once, not on every frame.
@@ -4302,12 +4302,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             tmp.set(-bw / 2, -bh / 2, bw / 2, bh / 2);
             sheen.setShader(watchSheen);
             sheen.setAlpha(alpha);
-            c.drawRoundRect(tmp, r0, r0, sheen);
+            c.drawRect(tmp, sheen);
             sheen.setAlpha(255);
             rim.setShader(watchRim);
             rim.setAlpha(alpha);
             rim.setStrokeWidth(2.5f * k / s);
-            c.drawRoundRect(tmp, r0, r0, rim);
+            c.drawRect(tmp, rim);
             rim.setStrokeWidth(2.5f * k);
             rim.setAlpha(255);
             c.restore();
@@ -4528,9 +4528,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         shadowDeep.setColor(Ui.alpha(0xFF000000, tone(0.22f, 0.5f) * a));
         shadows.draw(c, tmp, r, DEEP_BLUR * k, shadowDeep);
         fill.setColor(Ui.alpha(tone(0xFFFFFFFF, 0xFF2C2C2E), a));
-        c.drawRoundRect(menuPanel, r, r, fill);
+        c.drawRect(menuPanel, fill);
         border.setColor(Ui.alpha(tone(0x14000000, 0x1FFFFFFF), a));
-        c.drawRoundRect(menuPanel, r, r, border);
+        c.drawRect(menuPanel, border);
         float x = menuPanel.left + MENU_PAD * k, y = menuPanel.top + (MENU_PAD + 34) * k;
         menuTitlePaint.setColor(Ui.alpha(tone(L_INK, WHITE), a));
         c.drawText(menuTitle, x, y, menuTitlePaint);
@@ -4543,7 +4543,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         menuRow(0, tmp);
         tmp.offset(0, pick * MENU_STEP * k);
         fill.setColor(Ui.alpha(tone(L_INK, WHITE), a));
-        c.drawRoundRect(tmp, rowR, rowR, fill);
+        c.drawRect(tmp, fill);
         int ink = tone(L_INK, WHITE), onPill = tone(WHITE, L_INK);
         for (int i = 0; i < menuOptions.length; i++) {
             menuRow(i, tmp);
@@ -4700,7 +4700,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                 }
                 fill.setShader(null);
                 fill.setColor(Ui.alpha(0xFFFFFFFF, focus));
-                c.drawRoundRect(cell, rr, rr, fill);
+                c.drawRect(cell, fill);
             }
             Paint p = i == tab ? lTabOn : lTab;
             if (i == tab) lTabOn.setColor(blend(tone(L_INK, WHITE), L_INK, focus));   // always dark on the white pill
@@ -4774,7 +4774,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         } else {
             fill.setShader(null);
             fill.setColor(tone(0xFFDADADF, 0xFF2C2C2E));
-            c.drawRoundRect(cell, r, r, fill);
+            c.drawRect(cell, fill);
         }
         if (f > 0.01f) {
             if (lightSheens.length != cardRects.length) {
@@ -4795,12 +4795,12 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
             tmp.set(-bw / 2, -bh / 2, bw / 2, bh / 2);
             sheen.setShader(lightSheens[i]);
             sheen.setAlpha(alpha);
-            c.drawRoundRect(tmp, r0, r0, sheen);
+            c.drawRect(tmp, sheen);
             sheen.setAlpha(255);
             rim.setShader(lightRims[i]);
             rim.setAlpha(alpha);
             rim.setStrokeWidth(2.5f * k / s);
-            c.drawRoundRect(tmp, r0, r0, rim);
+            c.drawRect(tmp, rim);
             rim.setStrokeWidth(2.5f * k);
             rim.setAlpha(255);
             c.restore();

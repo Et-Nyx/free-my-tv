@@ -1281,7 +1281,7 @@ final class HomeApps {
             shader.setLocalMatrix(m);
             Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
             p.setShader(shader);
-            canvas.drawRoundRect(x, y, x + size, y + size, size * 0.2237f, size * 0.2237f, p);
+            canvas.drawRect(x, y, x + size, y + size, p);
         } else {
             // Legacy icon (a free-form drawing with transparency): smaller, no frame.
             int s = Math.round(th * 0.46f);
