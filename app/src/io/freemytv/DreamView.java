@@ -165,6 +165,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         });
         Shaders.dream(scene.palette);
         scene.setMotion(0.4f, 0.32f);
+        scene.setMinimal(Look.solid(), Look.background(), Look.panel(), Look.panelHi());
         scene.applyPalette();
         content.setUseCompositingLayer(true, null);
         try {

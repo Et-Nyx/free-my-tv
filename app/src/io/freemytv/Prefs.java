@@ -297,6 +297,20 @@ final class Prefs {
 
     static void setTheme(String v) { put("theme", v); }
 
+    /** This fork's Palette setting (0 keeps the stock aurora; see Look). */
+    static int look() {
+        return Math.max(0, sp().getInt("look", 0));
+    }
+
+    static void setLook(int n) { put("look", n); }
+
+    /** This fork's Accent setting (0 keeps the palette's own accent; see Look). */
+    static int accent() {
+        return Math.max(0, sp().getInt("accent", 0));
+    }
+
+    static void setAccent(int n) { put("accent", n); }
+
     /** Wi-Fi/Ethernet, Bluetooth and USB icons at the top-left of the home screen. */
     static boolean statusIcons() { return sp().getBoolean("statusicons", false); }
     static void setStatusIcons(boolean on) { put("statusicons", on); }

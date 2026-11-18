@@ -289,6 +289,7 @@ public class SettingsActivity extends Activity {
             Shaders.settings(scene.palette);
             scene.setMotion(0.5f, 0.2f);
             phone = HomeMode.phone(a);
+            scene.setMinimal(Look.solid(), Look.background(), Look.panel(), Look.panelHi());
             scene.applyPalette();
             setFocusable(true);
             setContentDescription("Free My TV");
@@ -984,14 +985,15 @@ public class SettingsActivity extends Activity {
 
         private static final String[] UNITS = {"auto", "C", "F"}, THEMES = {"auto", "light", "dark"},
                 CLOCKS = {"auto", "24", "12"};
-        /** Home Settings: language, temperature, theme, clock, my photos, sounds, top of the screen, picks, Continue
+        /** Home Settings: language, temperature, theme, palette, accent, clock, my photos, sounds, top of the screen, picks, Continue
          *  Watching's apps, watch from the screensaver, Android apps, status icons, Recent Apps, at power-on, Live TV button, weather, city, forecast,
          *  now playing, Home Assistant (only on builds with its address), quotes, one row per coin, then the TMDB and Watchmode keys and
-         *  updates (the last row). */
-        private static final int CLOCK_ROW = 3, PHOTOS_ROW = 4, TOP_ROW = 6, PICKS_ROW = 7, WATCH_ROW = 8,
-                SAVER_ROW = 9, ANDROID_APPS_ROW = 10, STATUS_ICONS_ROW = 11, RECENTS_ROW = 12, POWER_ON_ROW = 13,
-                LIVE_BUTTON_ROW = 14, WEATHER_ROW = 15, CITY_ROW = 16, FORECAST_ROW = 17, PLAYING_ROW = 18,
-                HOME_ROW = Config.HOME_ASSISTANT ? 19 : -1, QUOTES_ROW = Config.HOME_ASSISTANT ? 20 : 19, COIN_ROWS = QUOTES_ROW + 1;
+         *  updates (the last row). This fork's Palette and Accent follow Theme. */
+        private static final int PALETTE_ROW = 3, ACCENT_ROW = 4, CLOCK_ROW = 5, PHOTOS_ROW = 6, SOUNDS_ROW = 7,
+                TOP_ROW = 8, PICKS_ROW = 9, WATCH_ROW = 10, SAVER_ROW = 11, ANDROID_APPS_ROW = 12,
+                STATUS_ICONS_ROW = 13, RECENTS_ROW = 14, POWER_ON_ROW = 15, LIVE_BUTTON_ROW = 16, WEATHER_ROW = 17,
+                CITY_ROW = 18, FORECAST_ROW = 19, PLAYING_ROW = 20, HOME_ROW = Config.HOME_ASSISTANT ? 21 : -1,
+                QUOTES_ROW = Config.HOME_ASSISTANT ? 22 : 21, COIN_ROWS = QUOTES_ROW + 1;
         /** No "home" on Xiaomi TVs: their remote sends one Home press as a burst of presses (HomeView.BURST_MS). */
         private static final String[] RECENTS = RemoteKeys.XIAOMI ? new String[] {"off", "drawer"}
                 : new String[] {"off", "drawer", "home"};
@@ -1007,6 +1009,8 @@ public class SettingsActivity extends Activity {
             l.add(Ui.tr("Language"));
             l.add(Ui.tr("Temperature"));
             l.add(Ui.tr("Theme"));
+            l.add(Ui.tr("Palette"));
+            l.add(Ui.tr("Accent"));
             l.add(Ui.tr("Clock"));
             l.add(Ui.tr("My Photos"));
             l.add(Ui.tr("Navigation sounds"));
@@ -1108,6 +1112,8 @@ public class SettingsActivity extends Activity {
             v[1] = unit.equals("C") ? "°C" : unit.equals("F") ? "°F" : Ui.tr("unit|Automatic");
             String theme = Prefs.theme();
             v[2] = theme.equals("light") ? Ui.tr("Light") : theme.equals("dark") ? Ui.tr("Dark") : Ui.tr("Automatic");
+            v[PALETTE_ROW] = Look.NAMES[Look.palette()];
+            v[ACCENT_ROW] = Look.ACCENTS[Prefs.accent()];
             int photos = Photos.files(getContext()).size();
             v[PHOTOS_ROW] = photos == 0 ? Ui.tr("photos|None")
                     : Prefs.photos() ? Ui.plural("plural|one:{n} photo|other:{n} photos", photos) : Ui.tr("Off");
@@ -1481,6 +1487,20 @@ public class SettingsActivity extends Activity {
                     SleepOverlay.update(getContext());   // the pill's glass follows
                     break;
                 }
+                case PALETTE_ROW: {
+                    int n = Look.NAMES.length;
+                    Prefs.setLook((Look.palette() + dir + n) % n);
+                    scene.setMinimal(Look.solid(), Look.background(), Look.panel(), Look.panelHi());
+                    scene.applyPalette();
+                    return;
+                }
+                case ACCENT_ROW: {
+                    int n = Look.ACCENTS.length;
+                    Prefs.setAccent((Prefs.accent() + dir + n) % n);
+                    scene.setMinimal(Look.solid(), Look.background(), Look.panel(), Look.panelHi());
+                    scene.applyPalette();
+                    return;
+                }
                 case PHOTOS_ROW:
                     if (ImmichPhotos.configured(getContext())) return;   // OK opens the choice of source
                     if (Photos.files(getContext()).isEmpty()) return;
@@ -1491,7 +1511,7 @@ public class SettingsActivity extends Activity {
                     Prefs.setClockFormat(CLOCKS[(at + dir + CLOCKS.length) % CLOCKS.length]);
                     break;
                 }
-                case 5: Prefs.setSounds(!Prefs.sounds()); break;
+                case SOUNDS_ROW: Prefs.setSounds(!Prefs.sounds()); break;
                 case PICKS_ROW: return;
                 case SAVER_ROW: Prefs.setSaverWatch(!Prefs.saverWatch()); break;
                 case TOP_ROW: {

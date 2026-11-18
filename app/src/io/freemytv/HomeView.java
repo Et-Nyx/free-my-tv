@@ -1174,6 +1174,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     private void updatePalette() {
         HomeData.Weather wx = data.weather;
         Shaders.sky(scene.palette, System.currentTimeMillis(), wx.sunrise, wx.sunset);
+        scene.setMinimal(Look.solid(), Look.background(), Look.panel(), Look.panelHi());
         scene.applyPalette();
     }
 
@@ -2622,7 +2623,7 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawRect(cell, border);
         if (f > 0.01f) {
             rim.setShader(null);
-            rim.setColor(Ui.alpha(0xFFFFFFFF, 0.4f * fc));
+            rim.setColor(Ui.alpha(Look.accent(0xFFFFFFFF), 0.4f * fc));
             rim.setStrokeWidth(1.5f * k);
             c.drawRect(cell, rim);
             rim.setStrokeWidth(2.5f * k);

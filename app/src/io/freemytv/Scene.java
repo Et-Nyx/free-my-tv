@@ -42,6 +42,37 @@ final class Scene {
     private BitmapShader glassShaderA;
     private final boolean withGlass;
 
+    // --- This fork's minimal look (Look): a solid background and flat solid panels instead of the aurora and glass.
+    private boolean minimal;
+    private final Paint minBg = new Paint();
+    private final Paint minFill = new Paint();
+    private int minPanel, minPanelHi;
+
+    /**
+     * The fork's Look, pushed by every palette change: `on` draws `background` solid and every glass as a flat panel
+     * (`panel`, or `panelHi` where the stock glass would have been light, the focused). Stock (aurora and glass) is
+     * `on` false, and wins again as soon as this says so.
+     */
+    void setMinimal(boolean on, int background, int panel, int panelHi) {
+        minimal = on;
+        minBg.setColor(background | 0xFF000000);
+        minPanel = panel | 0xFF000000;
+        minPanelHi = panelHi | 0xFF000000;
+    }
+
+    /** Which flat panel a glass's tint asks for: a light tint (the focused glassLight) the bright one, else the plain. */
+    private int flatFor(int tint) {
+        int r = (tint >> 16) & 0xFF, g = (tint >> 8) & 0xFF, b = tint & 0xFF;
+        return (r + g + b) / 3 >= 128 ? minPanelHi : minPanel;
+    }
+
+    private void flat(Canvas c, RectF r, int tint, float alpha, float body) {
+        if (body <= 0) return;   // as with the glass: body 0 is only the rim, and the flat look has none
+        minFill.setColor(flatFor(tint));
+        minFill.setAlpha(Math.round(255 * Math.max(0, Math.min(1, alpha))));
+        c.drawRect(r, minFill);
+    }
+
     // --- Without AGSL: the glass drawn with bitmaps
     /** The photo's glass copy (480×270) box-averaged 8×, and its frost copy (192×108) 4×: 60×33 and 48×27. */
     private static final int SOFT = 8, SOFT_FROST = 4;
@@ -235,6 +266,10 @@ final class Scene {
     void liquid(Canvas c, RectF r, float radius, int tint, float tintAlpha, float lift, float band, float refraction,
                 float specular, float alpha) {
         if (alpha <= 0.004f) return;
+        if (minimal) {
+            flat(c, r, tint, alpha, 1);
+            return;
+        }
         if (liquid == null) {
             if (imageGlass && softShaderA != null) {
                 // Mapped by what the copy covers: 270 / 8 = 33.75 rows, of which the bitmap holds 33.
@@ -308,6 +343,10 @@ final class Scene {
     }
 
     void drawBackground(Canvas c) {
+        if (minimal) {
+            c.drawRect(0, 0, w, h, minBg);
+            return;
+        }
         if (aurora == null) {
             if (fallback.getShader() == null) applyPalette();
             c.drawRect(0, 0, w, h, fallback);
@@ -339,6 +378,10 @@ final class Scene {
     /** Same, with an opacity (0 to 1) for the whole glass. */
     void glass(Canvas c, RectF r, float radius, int tint, float tintAlpha, int glow, float glowAlpha, float lift, float body, float alpha) {
         if (alpha <= 0.004f) return;
+        if (minimal) {
+            flat(c, r, tint, alpha, body);
+            return;
+        }
         if (glass == null) {
             if (imageFrost && softShaderFrost != null) {
                 bitmapGlass(c, r, radius, softShaderFrost, Backdrop.FW / (float) SOFT_FROST, Backdrop.FH / (float) SOFT_FROST, null, 0,
