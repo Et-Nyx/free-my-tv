@@ -606,10 +606,11 @@ final class Prefs {
         }
         if (RemoteKeys.WHALE) {
             // The buttons' own apps aren't on this projector: open what its owner uses instead, until picked otherwise.
+            // Disney+ stays Nothing: its app (Paramount+, tried in both the Play and the Fire builds) can't run without
+            // Google Play Services on this box, and the key is left to the system.
             switch (keyCode) {
                 case KEY_WHALE_NETFLIX: return "com.stremio.one";
                 case KEY_WHALE_YOUTUBE: return "org.smarttube.stable";
-                case KEY_WHALE_DISNEY: return "com.cbs.ott";
                 case KEY_WHALE_PRIME: return "com.amazon.amazonvideo.livingroom";
                 default: return "";
             }
