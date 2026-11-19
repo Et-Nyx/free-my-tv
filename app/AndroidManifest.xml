@@ -241,6 +241,18 @@
                 android:resource="@xml/remote_key_service" />
         </service>
 
+        <!-- This fork: adb sets the palette and the accent for testing, in the home process so the redraw is live.
+             adb shell am broadcast -a io.freemytv.DEBUG_LOOK with an int extra named value -->
+        <receiver
+            android:name=".DebugReceiver"
+            android:process=":home"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.freemytv.DEBUG_LOOK" />
+                <action android:name="io.freemytv.DEBUG_ACCENT" />
+            </intent-filter>
+        </receiver>
+
         <!-- tools/photos.py writes photos here where adb can't reach the app's external folder (Android 11, Fire OS 8);
              only adb's shell may write (PhotoInbox checks). -->
         <provider

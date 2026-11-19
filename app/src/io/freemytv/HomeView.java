@@ -4579,20 +4579,26 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         long up = SystemClock.uptimeMillis();
         float e = bgFadeAt == 0 ? 1 : fadeEase(bgFadeAt, up);
         boolean fading = bgFadeAt != 0;
+        if (lightGradient == null) lightGradient = Ui.gradient(h, 0xFFF5F5F7, 0xFFE2E2E7);
+        if (nightGradient == null) nightGradient = Ui.gradient(h, 0xFF1C1C1E, 0xFF0B0B0D);
         // Drawer open: the background lightens (by day) or darkens (at night), as a filter on the drawing itself.
         android.graphics.ColorFilter v = veil(tone(0.32f, 0.42f) * Ui.clamp(drawer.value), blend(0xFFFFFFFF, 0xFF000000, night));
         if (bgTo == null || (fading && bgFrom == null)) {
-            if (lightGradient == null) lightGradient = Ui.gradient(h, 0xFFF5F5F7, 0xFFE2E2E7);
-            if (nightGradient == null) nightGradient = Ui.gradient(h, 0xFF1C1C1E, 0xFF0B0B0D);
-            fill.setColorFilter(v);
-            fill.setColor(0xFF000000);
-            if (continueMode()) {
+            if (Look.solid()) {
+                // This fork: the palette's own solid background (a photo behind fades out above); the drawer's veil
+                // keeps applying, as with the stock gradients.
+                fill.setColorFilter(v);
+                fill.setShader(null);
+                fill.setColor(Look.background());
+                c.drawRect(screen, fill);
+                fill.setColorFilter(null);
+            } else if (continueMode()) {
                 drawTint(c);
             } else if (night < 0.999f) {
                 fill.setShader(lightGradient);
                 c.drawRect(screen, fill);
             }
-            if (night > 0.001f && !continueMode()) {
+            if (night > 0.001f && !continueMode() && !Look.solid()) {
                 fill.setShader(nightGradient);
                 fill.setAlpha(Math.round(255 * night));
                 c.drawRect(screen, fill);
