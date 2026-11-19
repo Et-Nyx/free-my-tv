@@ -1344,6 +1344,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
     /** Day or night right now (from the sun at your location); `animate`: with the transition. */
     private void checkNight(boolean animate) {
         boolean want = data.isNight(System.currentTimeMillis());
+        // This fork: a light palette renders the home as day, so the app's dark day ink reads over it.
+        if (want && Look.solid() && Look.light()) want = false;
         if (want == nightTarget) return;
         nightTarget = want;
         if (animate && running) {

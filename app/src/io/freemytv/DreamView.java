@@ -260,14 +260,14 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         // With photos: the corner (date, clock, prices) and the caption.
         cornerDate = Ui.numbers(Ui.semibold, 30 * k, 0xEBFFFFFF);
         cornerQuote = Ui.numbers(Ui.regular, 23 * k, 0xC7FFFFFF);
-        cornerStale = Ui.text(Ui.medium, 21 * k, 0x99FFFFFF);
-        cornerClock = Ui.numbers(Ui.displaySemibold, CLOCK_SIZE * k, 0xF2FFFFFF);
-        labelPaint = Ui.text(Ui.medium, 25 * k, 0xB8FFFFFF);
+        cornerStale = Ui.text(Ui.medium, 21 * k, Ui.alpha(Look.ink(), 0.6f));
+        cornerClock = Ui.numbers(Ui.displaySemibold, CLOCK_SIZE * k, Ui.alpha(Look.ink(), 0.95f));
+        labelPaint = Ui.text(Ui.medium, 25 * k, Ui.alpha(Look.ink(), 0.72f));
         labelPaint.setLetterSpacing(0.1f);
-        titlePaint = new TextPaint(Ui.text(Ui.displayMedium, 76 * k, 0xFFFFFFFF));
+        titlePaint = new TextPaint(Ui.text(Ui.displayMedium, 76 * k, Look.ink()));
         titlePaint.setLetterSpacing(0.005f);
-        metaPaint = Ui.text(Ui.medium, 29 * k, 0xC7FFFFFF);
-        hintPaint = Ui.text(Ui.regular, 24 * k, 0x99FFFFFF);
+        metaPaint = Ui.text(Ui.medium, 29 * k, Ui.alpha(Look.ink(), 0.78f));
+        hintPaint = Ui.text(Ui.regular, 24 * k, Ui.alpha(Look.ink(), 0.6f));
         metaPaint.setLetterSpacing(0.014f);
         Symbols.warmWeather(getContext(), 30 * k);   // the corner's
         Symbols.warmWeather(getContext(), 32 * k);   // under the clock
@@ -654,7 +654,7 @@ final class DreamView extends View implements Choreographer.FrameCallback, HomeD
         }
         final Paint paint = new Paint(cornerClock);
         paint.clearShadowLayer();
-        paint.setColor(0xFFFFFFFF);
+        paint.setColor(Look.ink());
         final float right = RIGHT * k, top = CLOCK_TOP * k, scale = k;
         final int gen = generation;
         worker.execute(() -> {

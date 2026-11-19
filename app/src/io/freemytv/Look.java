@@ -12,15 +12,31 @@ final class Look {
     /** Settings rows: palette 0 keeps the stock aurora. */
     static final String[] NAMES = {"Aurora", "Grafite", "Meia-noite", "Floresta", "Ameixa", "Papel", "Osso"};
     /** Per palette: background, panel, panel bright (focus), accent. The dark ones differ clearly in hue:
-     *  slate, navy, green, plum; Papel and Osso are the light-walled ones. */
+     *  slate, navy, green, plum; Papel and Osso are the light-walled ones, rendered as day (dark ink on light). */
     private static final int[][] PALETTES = {
             {0x181A1F, 0x232630, 0x2E3240, 0xE8B54B},   // Grafite: slate charcoal, the neutral one
             {0x0A1030, 0x141E50, 0x1E2A6E, 0x6CB4F0},   // Meia-noite: deep navy
             {0x0A2416, 0x123A22, 0x1A5030, 0x7ED9A3},   // Floresta: deep green
             {0x241030, 0x3C1E50, 0x50286A, 0xC9A0D8},   // Ameixa: plum purple
-            {0xAEB0AC, 0x1E2023, 0x2A2D31, 0xE8B54B},   // Papel (light wall, dark panels)
-            {0xB2A899, 0x232019, 0x302B22, 0xD9B54A},   // Osso (light wall, dark panels)
+            {0xECEDEB, 0xF7F8F6, 0xFFFFFF, 0xC2410C},   // Papel: light wall, light panels, burnt-orange accent
+            {0xEAE3D3, 0xF5F0E6, 0xFFFDF6, 0x8A5A19},   // Osso: warm bone, bronze accent
     };
+
+    /** The light-walled palettes: the home renders as day, with the app's dark day ink over them. */
+    static boolean light() {
+        int p = palette();
+        return p == 5 || p == 6;
+    }
+
+    /** Text ink for the light palettes (the others keep the app's own, white at night). */
+    static int ink() {
+        return light() ? 0xFF1D1D1F : 0xFFFFFFFF;
+    }
+
+    /** `stock` where the light palettes want their dark ink instead. */
+    static int ink(int stock) {
+        return light() ? 0xFF1D1D1F : 0xFF000000 | (stock & 0xFFFFFF);
+    }
 
     /** Accent swatches: 0 keeps the palette's own. */
     static final String[] ACCENTS = {"Paleta", "Âmbar", "Oceano", "Menta", "Violeta", "Coral", "Ouro", "Ciano", "Branco"};
