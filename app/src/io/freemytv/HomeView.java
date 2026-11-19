@@ -2221,8 +2221,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         }
         if (f < 0.99f) drawerGlass(c, cell, r, 0.7f, 0x14000000, 6 * k);
         if (f > 0.01f) {
+            // This fork: the focused drawer tile fills with the accent (white on the stock aurora).
             fill.setShader(null);
-            fill.setColor(Ui.alpha(WHITE, f));
+            fill.setColor(Ui.alpha(Look.accent(0xFFFFFFFF), 0.85f * f));
             c.drawRect(cell, fill);
         }
         boolean off = it.kind == HomeApps.INPUT && !it.connected
@@ -2626,8 +2627,9 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
         c.drawRect(cell, border);
         if (f > 0.01f) {
             rim.setShader(null);
-            rim.setColor(Ui.alpha(Look.accent(0xFFFFFFFF), 0.4f * fc));
-            rim.setStrokeWidth(1.5f * k);
+            // This fork: the focused tile carries the accent as a solid rim (white on the stock aurora).
+            rim.setColor(Ui.alpha(Look.accent(0xFFFFFFFF), 0.9f * fc));
+            rim.setStrokeWidth(2 * k);
             c.drawRect(cell, rim);
             rim.setStrokeWidth(2.5f * k);
         }
@@ -4871,7 +4873,8 @@ final class HomeView extends ViewGroup implements Choreographer.FrameCallback, H
                     tone(0.6f, 0.45f), 1 - f);
             if (f > 0.01f) {
                 fill.setShader(null);
-                fill.setColor(Ui.alpha(0xFFFFFFFF, f));
+                // This fork: the focused top button fills with the accent (white on the stock aurora).
+                fill.setColor(Ui.alpha(Look.accent(0xFFFFFFFF), 0.85f * f));
                 c.drawCircle(cell.centerX(), cell.centerY(), rad, fill);
             }
             Symbols.draw(getContext(), c, it.symbol, cell.centerX(), cell.centerY(), 27 * k * s,

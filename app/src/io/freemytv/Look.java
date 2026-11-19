@@ -11,12 +11,13 @@ final class Look {
 
     /** Settings rows: palette 0 keeps the stock aurora. */
     static final String[] NAMES = {"Aurora", "Grafite", "Meia-noite", "Floresta", "Ameixa", "Papel", "Osso"};
-    /** Per palette: background, panel, panel bright (focus), accent. */
+    /** Per palette: background, panel, panel bright (focus), accent. The dark ones differ clearly in hue:
+     *  slate, navy, green, plum; Papel and Osso are the light-walled ones. */
     private static final int[][] PALETTES = {
-            {0x111318, 0x1C1F26, 0x272B33, 0xE8B54B},   // Grafite (dark)
-            {0x0C111A, 0x161D2A, 0x212B3C, 0x5B9BD5},   // Meia-noite (dark)
-            {0x0E1511, 0x18221B, 0x232F26, 0x6FBF8B},   // Floresta (dark)
-            {0x161018, 0x221A26, 0x2E2432, 0xB78BC4},   // Ameixa (dark)
+            {0x181A1F, 0x232630, 0x2E3240, 0xE8B54B},   // Grafite: slate charcoal, the neutral one
+            {0x0A1030, 0x141E50, 0x1E2A6E, 0x6CB4F0},   // Meia-noite: deep navy
+            {0x0A2416, 0x123A22, 0x1A5030, 0x7ED9A3},   // Floresta: deep green
+            {0x241030, 0x3C1E50, 0x50286A, 0xC9A0D8},   // Ameixa: plum purple
             {0xAEB0AC, 0x1E2023, 0x2A2D31, 0xE8B54B},   // Papel (light wall, dark panels)
             {0xB2A899, 0x232019, 0x302B22, 0xD9B54A},   // Osso (light wall, dark panels)
     };
